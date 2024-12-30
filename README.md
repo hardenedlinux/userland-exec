@@ -77,5 +77,8 @@ Hello World
 dm3q:/data/local/tmp $
 ```
 
+## Troubleshoot
+On `CentOS`, the libc library may exhibit unusual behavior. To address this issue, a simple "Hello, World" program written in assembly, [`hello_nolibc.s`](x86_64_examples/hello_nolibc.s), has been provided. This example together with the cmake demonstrates how to build and execute a program without linking to libc.
+
 ## License
 This repository uses the [GPL-3.0 License](https://spdx.org/licenses/GPL-3.0.html).
