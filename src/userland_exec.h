@@ -10,7 +10,21 @@
 
 #include <stddef.h>
 
-void userland_execv(const unsigned char *elf, char **argv, char **env,
-		size_t *stack) __attribute__((nonnull (1, 2, 3, 4)));
+void userland_execv(int fd, char **argv, char **env, size_t *stack)
+		__attribute__((nonnull (2, 3, 4)));
+
+#ifdef LOG_ERROR
+#include <stdio.h>
+#define eprintf(...) (fprintf(stderr, __VA_ARGS__))
+#else
+#define eprintf(...)
+#endif
+
+#ifdef DEBUG
+#include <stdio.h>
+#define dprintf(...) (printf(__VA_ARGS__))
+#else
+#define dprintf(...)
+#endif
 
 #endif
