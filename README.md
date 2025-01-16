@@ -23,11 +23,13 @@ The [`elf_debugger.c`](examples/elf_debugger.c) example demonstrates that any EL
 - Intercepts the signal and dynamically changes the page protection from `PROT_EXEC` to `PROT_WRITE`.
 
 ## Testing
-| OS | Architect | Result |
-|:-------------:|:-----------------------:|:----:|
-| Ubuntu 24.04 | x86_64 | Success |
-| CentOS | x86_64 | Success |
-| Raspberry Pi OS | arm64 | Success |
+| OS               | Architect | Result  |
+|:----------------:|:---------:|:-------:|
+| Ubuntu 24.04     | x86_64    | Success |
+| Archlinux 6.12.4 | x86_64    | Success |
+| CentOS           | x86_64    | Success |
+| Raspberry Pi OS  | arm64     | Success |
+| S23 Android 14   | arm64     | Success |
 
 ## Build and Usage
 This section describes how to build for Android and x86 machines. Ensure `libelf` is installed before proceeding.
