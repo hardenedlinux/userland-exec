@@ -22,6 +22,13 @@ The [`elf_debugger.c`](examples/elf_debugger.c) example demonstrates that any EL
 - On write attempts to this page, triggers a `SIGSEGV` signal.
 - Intercepts the signal and dynamically changes the page protection from `PROT_EXEC` to `PROT_WRITE`.
 
+## Testing
+| OS | Architect | Result |
+|:-------------:|:-----------------------:|:----:|
+| Ubuntu 24.04 | x86_64 | Success |
+| CentOS | x86_64 | Success |
+| Raspberry Pi OS | arm64 | Success |
+
 ## Build and Usage
 This section describes how to build for Android and x86 machines. Ensure `libelf` is installed before proceeding.
 
