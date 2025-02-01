@@ -168,9 +168,9 @@ void stack_setup(size_t *stack_base, size_t argc, char **argv, char **env,
 
 	for (i = 0; env[i]; i++)
 		stack_base[i + argc + 2] = (size_t)env[i];
-	stack_base[i + argc + 3] = 0;
+	stack_base[i + argc + 2] = 0;
 
-	auxv_base = stack_base + 1 + i + argc + 3;
+	auxv_base = stack_base + 1 + i + argc + 2;
 	synthetic_auxv(auxv_base);
 	load_program_info(auxv_base, exe, interp);
 }
