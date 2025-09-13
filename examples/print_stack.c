@@ -4,14 +4,14 @@
  * license.
  * ======================================================================
  */
+
 #include <stdio.h>
 
 extern char **environ;
 
 int main(int argc, char **argv)
 {
-	int i, cnt;
-	char **arg;
+	int cnt;
 	size_t *stack = (size_t *)argv - 1;
 
 	printf("argc: %d\n", argc);
@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 	}
 
 	printf("Stack:\n");
-	for (i = 0; stack[i] || stack[i + 1]; i++) {
-		printf("  0x%08zx\n", stack[i]);
+	for (cnt = 0; stack[cnt] || stack[cnt + 1]; cnt++) {
+		printf("  0x%08zx\n", stack[cnt]);
 	}
 	return 0;
 }
