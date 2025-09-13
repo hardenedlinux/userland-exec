@@ -322,7 +322,7 @@ int map_load(struct mapped_elf *obj, const unsigned char *data,
 			remapping = mmap(load + PAGE_FLOOR(phdr->p_vaddr),
 					 PAGE_CEIL(phdr->p_memsz +
 						   phdr->p_vaddr % PAGE_SIZE),
-					prot, MAP_PRIVATE,
+					prot, MAP_PRIVATE | MAP_FIXED,
 					mem_fd, (off_t)PAGE_FLOOR(phdr->p_vaddr));
 			if (remapping == MAP_FAILED) {
 				eprintf("Failed to mmap PT_LOAD: %s\n", strerror(errno));
@@ -398,7 +398,7 @@ void handle_pagefault(__attribute__((unused)) int sig,
 	}
 	remmap = mmap(PAGE_FLOOR(si->si_addr), PAGE_SIZE,
 		      PROT_READ | PROT_WRITE,
-		      MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+		      MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
 	// TODO: fixme, maybe retry mmap until success?
 	if (remmap == MAP_FAILED ||
 	    (size_t)remmap != (size_t)PAGE_FLOOR(si->si_addr)) {
