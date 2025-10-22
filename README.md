@@ -65,7 +65,7 @@ make
 ```bash
 mkdir build && cd build
 cmake -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake \
-      -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-14 ..
+      -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-30 ..
 make
 ```
 
@@ -88,6 +88,8 @@ dm3q:/data/local/tmp $
 
 ## Troubleshoot
 On `CentOS`, the libc library may exhibit unusual behavior. To address this issue, a simple "Hello, World" program written in assembly, [`hello_nolibc.s`](x86_64_examples/hello_nolibc.s), has been provided. This example together with the cmake demonstrates how to build and execute a program without linking to libc.
+
+If your CMAKE is above 4.0 you can append in the build `-DCMAKE_POLICY_VERSION_MINIMUM=3.5`.
 
 ## License
 This repository uses the [GPL-3.0 License](https://spdx.org/licenses/GPL-3.0.html).
