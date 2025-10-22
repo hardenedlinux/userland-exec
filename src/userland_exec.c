@@ -31,8 +31,8 @@
 #define PAGE_SIZE 0x1000
 #endif
 
-#define PAGE_FLOOR(addr) (typeof(addr))((uintptr_t)(addr) & (uintptr_t)(-PAGE_SIZE))
-#define PAGE_CEIL(addr) (typeof(addr))(PAGE_FLOOR((uintptr_t)(addr) - 1 + PAGE_SIZE))
+#define PAGE_FLOOR(addr) ((uintptr_t)(addr) & (uintptr_t)(-PAGE_SIZE))
+#define PAGE_CEIL(addr) (PAGE_FLOOR((uintptr_t)(addr) - 1 + PAGE_SIZE))
 
 
 #if UINTPTR_MAX > 0xffffffff
@@ -390,13 +390,13 @@ void handle_pagefault(__attribute__((unused)) int sig,
 	dprintf("Segmentation fault handler triggered for address: %p\n",
 		si->si_addr);
 
-	memcpy(page, PAGE_FLOOR(si->si_addr), PAGE_SIZE);
-	if (munmap(PAGE_FLOOR(si->si_addr), PAGE_SIZE) == -1) {
+	memcpy(page, (void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE);
+	if (munmap((void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE) == -1) {
 		eprintf("munmap failed in the pagefault handler: %s\n",
 			strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-	remmap = mmap(PAGE_FLOOR(si->si_addr), PAGE_SIZE,
+	remmap = mmap((void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE,
 		      PROT_READ | PROT_WRITE,
 		      MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
 	// TODO: fixme, maybe retry mmap until success?
@@ -437,7 +437,7 @@ void userland_execv(int fd, char **argv, char **env,
 	if (exe.interp) {
 		fd_interp = open(exe.interp, O_RDONLY);
 		if (fd_interp == -1) {
-			eprintf("Failed to open interp %p: %s\n", exe.interp,
+			eprintf("Failed to open interp %p: %s\n", (void *)exe.interp,
 				strerror(errno));
 			exit(EXIT_FAILURE);
 		}

@@ -22,7 +22,7 @@ void *shared_memory;
 struct sigaction old_action;
 
 #define BUFFER_SIZE 512
-#define PAGE_FLOOR(addr) (typeof(addr))((uintptr_t)(addr) & (uintptr_t)(-PAGE_SIZE))
+#define PAGE_FLOOR(addr) ((uintptr_t)(addr) & (uintptr_t)(-PAGE_SIZE))
 
 struct mem_map {
 	uintptr_t start_addr;
@@ -94,13 +94,13 @@ void handle_pagefault(__attribute__((unused)) int sig, siginfo_t *si,
 			printf("start_addr: 0x%lx - end_addr: 0x%lx - prot: %d\n",
 			       mapping.start_addr, mapping.end_addr, mapping.prot);
 
-			memcpy(page, PAGE_FLOOR(si->si_addr), PAGE_SIZE);
-			if (munmap(PAGE_FLOOR(si->si_addr), PAGE_SIZE) == -1) {
+			memcpy(page, (void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE);
+			if (munmap((void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE) == -1) {
 				fprintf(stderr, "munmap failed in the pagefault handler: %s\n",
 					strerror(errno));
 				exit(EXIT_FAILURE);
 			}
-			remmap = mmap(PAGE_FLOOR(si->si_addr), PAGE_SIZE,
+			remmap = mmap((void *)PAGE_FLOOR(si->si_addr), PAGE_SIZE,
 				      PROT_READ | PROT_WRITE,
 				      MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 			// TODO: fixme, maybe retry mmap until success?
@@ -125,7 +125,7 @@ void handle_pagefault(__attribute__((unused)) int sig, siginfo_t *si,
 	exit(EXIT_FAILURE);
 }
 
-int main() {
+int main(void) {
 	// Allocate shared memory page with mmap
 	shared_memory = mmap(NULL, PAGE_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if (shared_memory == MAP_FAILED) {
