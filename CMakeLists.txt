@@ -85,3 +85,12 @@ else()
 endif()
 
 install(TARGETS uexec RUNTIME DESTINATION bin)
+
+# ── rce_demo: ROP → userland-exec noexec bypass ───────────────────────────────────
+# Builds rce_demo/victim_server and rce_demo/payload.
+# See rce_demo/setup.sh and rce_demo/exploit.py for how to run the full rce_demo.
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    add_subdirectory(rce_demo)
+else()
+    message(STATUS "Skipping rce_demo (only supported on x86_64).")
+endif()
